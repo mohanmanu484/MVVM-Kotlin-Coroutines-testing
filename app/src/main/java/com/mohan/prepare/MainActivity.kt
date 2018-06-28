@@ -16,19 +16,19 @@ import kotlinx.coroutines.experimental.launch
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var binding:ActivityMainBinding
-    lateinit var model:NewsViewModel
-    lateinit var listAdapter:ListAdapter<News>
+    lateinit var binding: ActivityMainBinding
+    lateinit var model: NewsViewModel
+    lateinit var listAdapter: ListAdapter<News>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
         model = ViewModelProviders.of(this, ViewModelProviderFactory.getInstance()).get(NewsViewModel::class.java)
-        binding.model=model
+        binding.model = model
         initializeAdapter()
         bindListWithData()
-       launch(UI){
-        model.fetchData()
-       }
+        launch(UI) {
+            model.fetchData()
+        }
 
     }
 
@@ -42,15 +42,15 @@ class MainActivity : AppCompatActivity() {
 
     private fun initializeAdapter() {
 
-        listAdapter= object : ListAdapter<News>() {
+        listAdapter = object : ListAdapter<News>() {
             override fun getViewType(position: Int): Int {
                 return R.layout.adapter_news_item
             }
         }
         (binding.newsList).apply {
-            layoutManager=LinearLayoutManager(this@MainActivity)
+            layoutManager = LinearLayoutManager(this@MainActivity)
             setHasFixedSize(true)
-            adapter=listAdapter
+            adapter = listAdapter
         }
     }
 
