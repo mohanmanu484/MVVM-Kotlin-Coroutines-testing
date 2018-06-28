@@ -6,6 +6,7 @@ import android.databinding.DataBindingUtil
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.widget.Toast
 import com.mohan.prepare.adapter.ListAdapter
 import com.mohan.prepare.databinding.ActivityMainBinding
 import com.mohan.prepare.injections.ViewModelProviderFactory
@@ -29,6 +30,9 @@ class MainActivity : AppCompatActivity() {
         launch(UI) {
             model.fetchData()
         }
+        model.errorMessage.observe(this, Observer {
+            Toast.makeText(this@MainActivity,it,Toast.LENGTH_SHORT).show()
+        })
 
     }
 

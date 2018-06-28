@@ -12,6 +12,8 @@ import com.mohan.prepare.exceptions.NoInternetException
 import com.mohan.prepare.model.News
 import com.mohan.prepare.util.Util
 import kotlinx.coroutines.experimental.*
+import retrofit2.HttpException
+import java.io.IOException
 import kotlin.properties.Delegates
 
 open class NewsViewModel(val context:Context,dataManager: DataManagerDelegate) : ViewModel(), DataManagerDelegate by dataManager {
@@ -70,9 +72,14 @@ open class NewsViewModel(val context:Context,dataManager: DataManagerDelegate) :
     open suspend fun fetchDataFromManager():List<News>? {
         val data=fetchDataFromPref()
         if (isDataEmpty(data)) {
-            return fetchDataFromNetwork().apply {
-               this?.let {saveDataToPref(this)}
-            }?.newsList
+
+            try {
+                return fetchDataFromNetwork().apply {
+                    this?.let { saveDataToPref(this) }
+                }?.newsList
+            }catch (e:Exception){
+                throw NoInternetException()
+            }
         }
         return data
     }
